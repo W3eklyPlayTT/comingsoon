@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coming Soon | W3ekly Studios</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Press Start 2P', monospace;
+      background: #0a0f14;
+      color: #a8e6cf;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      image-rendering: pixelated;
+    }
+
+    /* Subtle grid / lo-fi dev background */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(30, 144, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 144, 255, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Soft glow orbs for atmosphere */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .glow-1 {
+      width: 400px;
+      height: 400px;
+      background: #1e90ff;
+      top: -100px;
+      left: -100px;
+    }
+    .glow-2 {
+      width: 350px;
+      height: 350px;
+      background: #00ff9f;
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: #7fffd4;
+      text-shadow: 0 0 12px rgba(0, 255, 159, 0.5), 2px 2px 0 #0a0f14;
+      margin-bottom: 0.8rem;
+      letter-spacing: 2px;
+    }
+
+    .subtitle {
+      font-size: clamp(0.55rem, 1.8vw, 0.75rem);
+      color: #5dade2;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+
+    .links {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.2rem;
+      background: #111820;
+      border: 3px solid #1e90ff;
+      color: #a8e6cf;
+      text-decoration: none;
+      font-size: 0.55rem;
+      transition: all 0.15s steps(2);
+      box-shadow: 4px 4px 0 #0a0f14;
+    }
+
+    .link-btn:hover {
+      background: #1a2a3a;
+      border-color: #00ff9f;
+      color: #7fffd4;
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 #0a0f14;
+    }
+
+    .link-btn.modrinth {
+      border-color: #1bd96a;
+    }
+    .link-btn.modrinth:hover {
+      border-color: #7fffd4;
+    }
+
+    .link-btn.bbb {
+      border-color: #f1c40f;
+    }
+    .link-btn.bbb:hover {
+      border-color: #f39c12;
+    }
+
+    .link-btn.discord {
+      border-color: #5865F2;
+    }
+    .link-btn.discord:hover {
+      border-color: #7289da;
+      color: #c9d1ff;
+    }
+
+    /* Countdown */
+    .countdown-label {
+      font-size: 0.6rem;
+      color: #5dade2;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .time-box {
+      background: #111820;
+      border: 3px solid #1e90ff;
+      padding: 0.9rem 1rem;
+      min-width: 80px;
+      box-shadow: 4px 4px 0 #0a0f14;
+    }
+
+    .time-value {
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: #7fffd4;
+      text-shadow: 0 0 8px rgba(0, 255, 159, 0.4);
+    }
+
+    .time-label {
+      font-size: 0.45rem;
+      color: #5dade2;
+      margin-top: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    /* Minecraft XP style progress bar */
+    .xp-section {
+      margin: 2rem auto 0;
+      max-width: 480px;
+      width: 90%;
+    }
+
+    .xp-label {
+      font-size: 0.5rem;
+      color: #a8e6cf;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .xp-bar-container {
+      height: 18px;
+      background: #1a1a1a;
+      border: 3px solid #555;
+      position: relative;
+      box-shadow: inset 0 0 0 2px #000, 3px 3px 0 #0a0f14;
+      image-rendering: pixelated;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to bottom, #80ff20 0%, #40c020 40%, #208010 100%);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.3);
+      transition: width 0.4s steps(8);
+      position: relative;
+    }
+
+    /* XP bar shine / texture */
+    .xp-bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .xp-level {
+      font-size: 0.55rem;
+      color: #80ff20;
+      margin-top: 0.6rem;
+      text-shadow: 0 0 6px rgba(128, 255, 32, 0.5);
+    }
+
+    /* Footer credit */
+    .credit {
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+      z-index: 10;
+      background: #111820;
+      border: 3px solid #f1c40f;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.45rem;
+      color: #f1c40f;
+      box-shadow: 0 0 12px rgba(241, 196, 15, 0.35), 4px 4px 0 #0a0f14;
+      text-shadow: 0 0 4px rgba(241, 196, 15, 0.4);
+    }
+
+    .credit span {
+      color: #7fffd4;
+    }
+
+    /* AI assist credit bottom left */
+    .ai-credit {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      font-size: 0.4rem;
+      color: #666;
+      letter-spacing: 0.5px;
+      opacity: 0.7;
+      filter: grayscale(100%);
+    }
+
+    /* Status */
+    .status {
+      margin-top: 1.5rem;
+      font-size: 0.5rem;
+      color: #5dade2;
+      opacity: 0.8;
+    }
+
+    .status .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #00ff9f;
+      border-radius: 1px;
+      margin-right: 6px;
+      animation: blink 1.2s steps(2) infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+
+    @media (max-width: 500px) {
+      .time-box {
+        min-width: 65px;
+        padding: 0.7rem 0.6rem;
+      }
+      .links {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="container">
+    <h1>COMING SOON</h1>
+    <p class="subtitle">W3ekly Studios • Minecraft Mods & More<br>Dev build in progress • Lo-fi vibes</p>
+
+    <div class="links">
+      <a class="link-btn modrinth" href="https://modrinth.com/organization/w3eklystudios" target="_blank" rel="noopener">
+        [ Modrinth ]
+      </a>
+      <a class="link-btn bbb" href="https://builtbybit.com/creators/w3ekly_play_tt.545619/" target="_blank" rel="noopener">
+        [ BuiltByBit ]
+      </a>
+      <a class="link-btn discord" href="https://discord.gg/your-invite-code" target="_blank" rel="noopener">
+        [ Discord ]
+      </a>
+    </div>
+
+    <div class="countdown-label">RELEASE COUNTDOWN • SEPT 20 2026</div>
+    <div class="countdown" id="countdown">
+      <div class="time-box">
+        <div class="time-value" id="days">--</div>
+        <div class="time-label">Days</div>
+      </div>
+      <div class="time-box">
+        <div class="time-value" id="hours">--</div>
+        <div class="time-label">Hours</div>
+      </div>
+      <div class="time-box">
+        <div class="time-value" id="mins">--</div>
+        <div class="time-label">Mins</div>
+      </div>
+      <div class="time-box">
+        <div class="time-value" id="secs">--</div>
+        <div class="time-label">Secs</div>
+      </div>
+    </div>
+
+    <div class="xp-section">
+      <div class="xp-label">
+        <span>PROJECT XP</span>
+        <span id="xp-percent">0%</span>
+      </div>
+      <div class="xp-bar-container">
+        <div class="xp-bar-fill" id="xp-bar"></div>
+      </div>
+      <div class="xp-level">Level <span id="level">0</span> • Collecting more XP...</div>
+    </div>
+
+    <div class="status">
+      <span class="dot"></span> DEV STATUS: ONLINE • BUILDING
+    </div>
+  </div>
+
+  <div class="ai-credit">Assisted By AI</div>
+
+  <div class="credit">
+    made by <span>W3ekly_Play_TT</span>
+  </div>
+
+  <script>
+    // Target: September 20, 2026 00:00:00 local
+    const targetDate = new Date('2026-09-20T00:00:00').getTime();
+
+    // Approximate start for progress (e.g. from beginning of year or a fixed past date)
+    // Using a reasonable "project start" for visual XP progress — adjust if needed
+    const startDate = new Date('2026-01-01T00:00:00').getTime();
+    const totalDuration = targetDate - startDate;
+
+    function updateCountdown() {
+      const now = Date.now();
+      const distance = targetDate - now;
+
+      if (distance <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('mins').textContent = '00';
+        document.getElementById('secs').textContent = '00';
+        document.getElementById('xp-bar').style.width = '100%';
+        document.getElementById('xp-percent').textContent = '100%';
+        document.getElementById('level').textContent = 'MAX';
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('mins').textContent = String(mins).padStart(2, '0');
+      document.getElementById('secs').textContent = String(secs).padStart(2, '0');
+
+      // XP progress based on time elapsed toward target
+      const elapsed = now - startDate;
+      let progress = Math.min(100, Math.max(0, (elapsed / totalDuration) * 100));
+      // Smooth a bit and keep it interesting
+      progress = Math.floor(progress * 10) / 10;
+
+      document.getElementById('xp-bar').style.width = progress + '%';
+      document.getElementById('xp-percent').textContent = progress.toFixed(1) + '%';
+
+      // Fake level based on progress (Minecraft XP feel)
+      const level = Math.floor(progress / 5); // 0-20 levels roughly
+      document.getElementById('level').textContent = level;
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
